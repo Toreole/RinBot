@@ -7,8 +7,11 @@ namespace RinBot
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            //ur mom gay lol
+            Console.WriteLine("Please enter login token:");
+            var token = Console.ReadLine();
+            
+
+            
         }
     }
 }
