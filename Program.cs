@@ -8,6 +8,7 @@ namespace RinBot
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+            //ur mom gay lol
         }
     }
 }
