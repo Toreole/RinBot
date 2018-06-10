@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.DependencyInjection;
+using static RinBot.Emotes;
 
 namespace RinBot
 {
@@ -21,14 +22,14 @@ namespace RinBot
         Random random;
 
         string[] pingTexts = { 
-            "Why do you ping me?! <:RinDespair:454381568656408588>",
-            "PLS NO PING <a:RinReeee:454380617035939860>",
+            $"Why do you ping me?! {Despair}",
+            $"PLS NO PING {Reeee}",
             "...", 
             "Cut it out!", 
-            "<:RinBaka:454380215918133270>",
+            $"{Baka}",
             "Can u don't?", 
             "No u" , 
-            "<:RinEeeeh:455056721908596748>"
+            $"{Eeeeh}"
             };
 
         static void Main(string[] args) => new Program().GoRin().GetAwaiter().GetResult();

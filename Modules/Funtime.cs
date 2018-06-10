@@ -4,6 +4,7 @@ using Discord.Commands;
 using System.Threading.Tasks;
 using Discord;
 using System.Linq;
+using static RinBot.Emotes;
 
 namespace RinBot
 {
@@ -20,7 +21,7 @@ namespace RinBot
 
         [Command("owo")]
         public async Task OwoAsync(){
-            await ReplyAsync("<:RinHeh:454765632823623680>");
+            await ReplyAsync($"{Heh}");
         }
 
         [Command("yay")]
@@ -54,7 +55,7 @@ namespace RinBot
 
         [Command("yay")]
         public async Task YayAsync(){
-            await ReplyAsync("You wanna congratulate yourself? <:RinEeeeh:455056721908596748> For what?");
+            await ReplyAsync($"You wanna congratulate yourself? {Eeeeh} For what?");
         }
 
         [Command("oof")]
