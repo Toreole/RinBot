@@ -19,12 +19,12 @@ namespace RinBot
             };
 
 
-        [Command("owo")]
+        [Command("owo"), Summary("owo at rin")]
         public async Task OwoAsync(){
-            await ReplyAsync($"{Heh}");
+            await ReplyAsync($"Ey, stop looking at me like that. {Heh}");
         }
 
-        [Command("yay")]
+        [Command("yay"), Summary("congratulate a user, @someone, or maybe yourself.")]
         public async Task YayAsync([Remainder]IUser user){
             Random random = new Random();
             var index = random.Next(0, proudText.Length);
@@ -58,7 +58,7 @@ namespace RinBot
             await ReplyAsync($"You wanna congratulate yourself? {Eeeeh} For what?");
         }
 
-        [Command("oof")]
+        [Command("oof"), Summary("a major oof")]
         public async Task OofAsync(){
             await ReplyAsync("<:oof:455340425394520065><:oof:455340425394520065><:oof:455340425394520065>   <:oof:455340425394520065><:oof:455340425394520065><:oof:455340425394520065>   <:oof:455340425394520065><:oof:455340425394520065><:oof:455340425394520065>\n" +
                              "<:oof:455340425394520065>       <:oof:455340425394520065>   <:oof:455340425394520065>       <:oof:455340425394520065>   <:oof:455340425394520065>\n"+

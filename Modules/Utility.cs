@@ -3,12 +3,15 @@ using Discord.WebSocket;
 using Discord.Commands;
 using System.Threading.Tasks;
 using Discord;
+using System.Reflection;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace RinBot
 {
     public class UtilityModule : ModuleBase<SocketCommandContext>
     {
-        [Command("help")]
+        [Command("help"), Summary("its help, what do you expect")]
         public async Task HelpAsync(){
             await ReplyAsync("Help yourself...");
 
@@ -28,6 +31,34 @@ namespace RinBot
             .WithDescription(commandList);
 
             await ReplyAsync("", false, builder.Build(), null);
+        }
+
+        [Command("help")]
+        public async Task HelpAsync([Remainder]string command){
+            await Context.Channel.TriggerTypingAsync();
+
+            var assembly = Assembly.GetEntryAssembly();
+
+            //Get method with CommandAttribute named string command, that also has a SummaryAttribute. The Summary is the target of this method.
+
+            //Get all commands from the assembly oof not nice.
+            List<MethodInfo> commands = assembly.GetTypes().SelectMany(t => t.GetMethods()).ToList();
+
+            MethodInfo targetCommand = commands.Find(x => x.GetCustomAttributes().Where(at => at.GetType().Equals(typeof(CommandAttribute)) && (at as CommandAttribute).Text.Equals(command)).Any());
+
+            if(targetCommand == null)
+            {
+                await ReplyAsync($"Could not find command `{command}`");
+                return;
+            }
+            string summary = $"Command `{command}` has no summary, just try it.";
+
+            SummaryAttribute sum = targetCommand.GetCustomAttributes().Where(mi => mi.GetType().Equals(typeof(SummaryAttribute))).First() as SummaryAttribute;
+            if(sum != null)
+                summary = sum.Text;
+            
+            string output = $"{command} : {summary}";
+            await ReplyAsync(output);
         }
     }
 }
