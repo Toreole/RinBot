@@ -53,9 +53,14 @@ namespace RinBot
             }
             string summary = $"Command `{command}` has no summary, just try it.";
 
-            SummaryAttribute sum = targetCommand.GetCustomAttributes().Where(mi => mi.GetType().Equals(typeof(SummaryAttribute))).First() as SummaryAttribute;
-            if(sum != null)
-                summary = sum.Text;
+            var sums = targetCommand.GetCustomAttributes().Where(mi => mi.GetType().Equals(typeof(SummaryAttribute))).ToArray(); //
+
+            if(sums.Length == 0){
+                await ReplyAsync(summary);
+                return;
+            }
+
+            summary = (sums[0] as SummaryAttribute).Text;
             
             string output = $"{command} : {summary}";
             await ReplyAsync(output);
