@@ -20,6 +20,17 @@ namespace RinBot
 
         Random random;
 
+        string[] pingTexts = { 
+            "Why do you ping me?! <:RinDespair:454381568656408588>",
+            "PLS NO PING <a:RinReeee:454380617035939860>",
+            "...", 
+            "Cut it out!", 
+            "<:RinBaka:454380215918133270>",
+            "Can u don't?", 
+            "No u" , 
+            "<:RinEeeeh:455056721908596748>"
+            };
+
         static void Main(string[] args) => new Program().GoRin().GetAwaiter().GetResult();
 
         public async Task GoRin(){
@@ -31,14 +42,14 @@ namespace RinBot
                 .BuildServiceProvider();
 
             Console.WriteLine("Please enter login token:");
-            string token = Console.ReadLine();
+            //string token = Console.ReadLine();
 
             await RegisterCommandsAsync();
 
-            await client.LoginAsync(TokenType.Bot, token);
+            await client.LoginAsync(TokenType.Bot, "");
 
             await client.StartAsync();
-
+            
             await Task.Delay(-1);
         }
 
@@ -60,26 +71,7 @@ namespace RinBot
             int argPos = 0;
             var context = new SocketCommandContext(client, message);
 
-            if (message.Content.Contains("<@454391745044676608>"))
-            {
-                Random r = new Random();
-                var i = r.Next(0,7);
-                string[] texts = { "Why do you ping me?! <:RinDespair:454381568656408588>", "PLS NO PING REEEEEE!!!", "...", "Stop it!", "Baka...", "Can u don't?", "No u" };
-                await message.Channel.SendMessageAsync(texts[i]);
-
-                return;
-            }
-            if (message.Content.Contains("@someone"))
-            {
-                var target = context.Guild.Users.ElementAt(random.Next(0, context.Guild.Users.Count));
-                //await message.Channel.SendMessageAsync($"{target.Mention} {text}");
-                var text = message.Content.Replace("@someone", $"{target.Mention}");
-                await message.Channel.SendMessageAsync($"{text} - by {message.Author.Username}, using @someone");
-                await message.DeleteAsync();
-            }
-
-
-            else if (message.HasStringPrefix("rin!", ref argPos))
+            if (message.HasStringPrefix("rin!", ref argPos))
             {
                 var result = await commands.ExecuteAsync(context, argPos, services);
                 
@@ -89,6 +81,24 @@ namespace RinBot
                 {
                     await message.Channel.SendMessageAsync("I can't do that! (yet?) Use rin!help if you're unsure!");
                 }
+                return;
+            }
+            if (message.Content.Contains("<@454391745044676608>"))
+            {
+                Random r = new Random();
+                var i = r.Next(0,pingTexts.Length);
+                await message.Channel.SendMessageAsync(pingTexts[i]);
+
+                return;
+            }
+            if (message.Content.Contains("@someone"))
+            {
+                var possible = context.Guild.Users.Where(x => x.Id != client.CurrentUser.Id && x != message.Author);
+                var target = possible.ElementAt(random.Next(0, possible.Count()));
+                //await message.Channel.SendMessageAsync($"{target.Mention} {text}");
+                var text = message.Content.Replace("@someone", $"{target.Mention}");
+                await message.Channel.SendMessageAsync($"{text} - by {message.Author.Username}, using @someone");
+                await message.DeleteAsync();
             }
         }
     }
