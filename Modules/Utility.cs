@@ -13,10 +13,10 @@ namespace RinBot
             await ReplyAsync("Help yourself...");
 
             var commandList = 
-            "**Utility Commands:**\n" +
+            "**Useful Commands:**\n" +
             "`help` \n" +
-            "**Fun Commands:**\n"+
-            "`yay` `owo` \n" +
+            "**Weirdo Commands:**\n"+
+            "`yay` `owo` `oof`\n" +
             "**Other Stuff:** \n" + 
             "Try using @someone and see what happens. ;) \n";
 

@@ -48,13 +48,22 @@ namespace RinBot
             }
             else 
             {
-                await Context.Channel.SendMessageAsync("How about no.");
+                await Context.Channel.SendMessageAsync($"Is {text} even a thing?");
             }
         }
 
         [Command("yay")]
         public async Task YayAsync(){
             await ReplyAsync("You wanna congratulate yourself? <:RinEeeeh:455056721908596748> For what?");
+        }
+
+        [Command("oof")]
+        public async Task OofAsync(){
+            await ReplyAsync("<:oof:455340425394520065><:oof:455340425394520065><:oof:455340425394520065>   <:oof:455340425394520065><:oof:455340425394520065><:oof:455340425394520065>   <:oof:455340425394520065><:oof:455340425394520065><:oof:455340425394520065>\n" +
+                             "<:oof:455340425394520065>       <:oof:455340425394520065>   <:oof:455340425394520065>       <:oof:455340425394520065>   <:oof:455340425394520065>\n"+
+                             "<:oof:455340425394520065>       <:oof:455340425394520065>   <:oof:455340425394520065>       <:oof:455340425394520065>   <:oof:455340425394520065><:oof:455340425394520065>\n"+
+                             "<:oof:455340425394520065>       <:oof:455340425394520065>   <:oof:455340425394520065>       <:oof:455340425394520065>   <:oof:455340425394520065>\n"+
+                             "<:oof:455340425394520065><:oof:455340425394520065><:oof:455340425394520065>   <:oof:455340425394520065><:oof:455340425394520065><:oof:455340425394520065>   <:oof:455340425394520065>\n");
         }
 
     }
