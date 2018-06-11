@@ -11,7 +11,7 @@ namespace RinBot
 {
     public class UtilityModule : MBase
     {
-        [Command("help"), Summary("its help, what do you expect")]
+        [Command("help"), Summary("its help, what do you expect. `rin!help [command]`")]
         public async Task HelpAsync(){
             await ReplyAsync("Help yourself...");
 
@@ -19,7 +19,9 @@ namespace RinBot
             "**Useful Commands:**\n" +
             "`help` \n" +
             "**Fun Commands:**\n"+
-            "`yay` `owo` `oof`\n" +
+            "`yay` `owo` `oof` `dadjoke`\n" +
+            "**Moderator Commands:**\n" +
+            "`purge` \n" +
             "**Other Stuff:** \n" + 
             "Try using @someone and see what happens. ;) \n";
 
@@ -81,7 +83,7 @@ namespace RinBot
 #endregion
         }
 
-        [Command("purge"), RequireBotPermission(GuildPermission.ManageMessages), Summary("Deletes a given amount of messages, only for Moderators."), RequireUserPermission(GuildPermission.ManageMessages)]
+        [Command("purge"), RequireBotPermission(GuildPermission.ManageMessages), Summary("Deletes a given amount of messages, only for Moderators and above: `rin!purge 10`"), RequireUserPermission(GuildPermission.ManageMessages)]
         public async Task PurgeAsync([Remainder] int amount)
         {
             //Console.WriteLine($"Purge {amount}");

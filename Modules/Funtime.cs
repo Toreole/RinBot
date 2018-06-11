@@ -4,6 +4,9 @@ using Discord.Commands;
 using System.Threading.Tasks;
 using Discord;
 using System.Linq;
+using System.Net;
+using System.IO;
+using System.Text;
 using static RinBot.Emotes;
 
 namespace RinBot
@@ -18,12 +21,12 @@ namespace RinBot
             "Could have been a lot worse {0}, a whole lot worse. "
             };
 
-        [Command("owo"), Summary("owo at rin")]
+        [Command("owo"), Summary("OWO at Rin. `rin!owo`")]
         public async Task OwoAsync(){
             await ReplyAsync($"Ey, stop looking at me like that. {Heh}");
         }
 
-        [Command("yay"), Summary("congratulate a user, @someone, or *maybe* yourself.")]
+        [Command("yay"), Summary("Force Rin to congratulate someone. `rin!yay [username/nickname/@someone]`")]
         public async Task YayAsync([Remainder]IUser user){
             Random random = new Random();
             var index = random.Next(0, proudText.Length);
@@ -57,18 +60,44 @@ namespace RinBot
             await ReplyAsync($"You wanna congratulate yourself? {Eeeeh} For what?");
         }
 
-        [Command("oof"), Summary("a major oof")]
+        [Command("oof"), Summary("A major OOF. `rin!oof`")]
         public async Task OofAsync(){
-            await ReplyAsync("<:oof:455340425394520065><:oof:455340425394520065><:oof:455340425394520065>   <:oof:455340425394520065><:oof:455340425394520065><:oof:455340425394520065>   <:oof:455340425394520065><:oof:455340425394520065><:oof:455340425394520065>\n" +
-                             "<:oof:455340425394520065>       <:oof:455340425394520065>   <:oof:455340425394520065>       <:oof:455340425394520065>   <:oof:455340425394520065>\n"+
-                             "<:oof:455340425394520065>       <:oof:455340425394520065>   <:oof:455340425394520065>       <:oof:455340425394520065>   <:oof:455340425394520065><:oof:455340425394520065>\n"+
-                             "<:oof:455340425394520065>       <:oof:455340425394520065>   <:oof:455340425394520065>       <:oof:455340425394520065>   <:oof:455340425394520065>\n"+
-                             "<:oof:455340425394520065><:oof:455340425394520065><:oof:455340425394520065>   <:oof:455340425394520065><:oof:455340425394520065><:oof:455340425394520065>   <:oof:455340425394520065>\n");
+            await ReplyAsync($"{OOF}{OOF}{OOF}   {OOF}{OOF}{OOF}   {OOF}{OOF}{OOF}\n" +
+                             $"{OOF}       {OOF}   {OOF}       {OOF}   {OOF}\n"+
+                             $"{OOF}       {OOF}   {OOF}       {OOF}   {OOF}{OOF}\n"+
+                             $"{OOF}       {OOF}   {OOF}       {OOF}   {OOF}\n"+
+                             $"{OOF}{OOF}{OOF}   {OOF}{OOF}{OOF}   {OOF}\n");
         }
         
-        [Command("test")]
-        public async Task TestAsync(){
+        [Command("test"), RequireOwner]
+        public async Task TestAsync()
+        {
             await ReplyAsync("test");
+        }
+
+        [Command("dadjoke"), Alias("badjoke"), Summary("Be the best dad with these dadjokes. `rin!dadjoke` or `rin!badjoke`")]
+        public async Task DadjokeAsync()
+        {
+            await Context.Channel.TriggerTypingAsync();
+            string url = "https://icanhazdadjoke.com/";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Headers.Add("User-Agent", "Discord Bot Rin");
+            request.Headers.Add("Accept", "text/plain");
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream resStream = response.GetResponseStream();
+            byte[] buffer = new byte[256];
+            int error = resStream.Read(buffer, 0, 256);
+            string joke = Encoding.UTF8.GetString(buffer.Where(b => b != 0).ToArray());
+            
+
+            EmbedBuilder embed = new EmbedBuilder()
+                .WithDescription(joke)
+                .WithAuthor($"Dadjoke for {Context.Message.Author.Username}")
+                .WithFooter("Dadjokes powered by icanhazdadjoke.com");
+
+            await ReplyAsync ("", false, embed.Build(), null);
         }
     }
 }

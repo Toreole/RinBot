@@ -10,5 +10,6 @@ namespace RinBot
         public static Emote Heh { get => Emote.Parse("<:RinHeh:454765632823623680>"); }
         public static Emote Reeee { get => Emote.Parse("<a:RinReeee:454380617035939860>"); }
         public static Emote Wink2 { get => Emote.Parse("<:RinWink2:454380215435526146>"); }
+        public static Emote OOF { get => Emote.Parse("<:oof:455340425394520065>"); }
     }
 }
