@@ -8,7 +8,7 @@ using static RinBot.Emotes;
 
 namespace RinBot
 {
-    public class Funtime : ModuleBase<SocketCommandContext>
+    public class Funtime : MBase
     {
         string[] proudText = {
             "I'm proud of you {0}, whatever you did. <:RinWink2:454380215435526146>",
@@ -24,7 +24,7 @@ namespace RinBot
             await ReplyAsync($"Ey, stop looking at me like that. {Heh}");
         }
 
-        [Command("yay"), Summary("congratulate a user, @someone, or maybe yourself.")]
+        [Command("yay"), Summary("congratulate a user, @someone, or *maybe* yourself.")]
         public async Task YayAsync([Remainder]IUser user){
             Random random = new Random();
             var index = random.Next(0, proudText.Length);
