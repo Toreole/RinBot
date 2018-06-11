@@ -17,7 +17,7 @@ namespace RinBot
 
             var commandList = 
             "**Useful Commands:**\n" +
-            "`help` \n" +
+            "`help` `info`\n" +
             "**Fun Commands:**\n"+
             "`yay` `owo` `oof` `dadjoke`\n" +
             "**Moderator Commands:**\n" +
@@ -94,6 +94,22 @@ namespace RinBot
             await channel.DeleteMessagesAsync(flatMessages);
             //foreach(IMessage msg in messages)
                // await Context.Channel.DeleteMessageAsync(msg);
+        }
+
+        [Command("info"), RequireBotPermission(ChannelPermission.SendMessages), Summary("General info about Rin Bot.")]
+        public async Task InfoAsync(){
+            string info = 
+                "**Info on Rin Bot** \n" +
+                "Rin Bot is a neat little Bot for all kinds of memes and other stuff. \n" + 
+                "Her personality is based on Rin Tohsaka from Fate/Stay Night Unlimited Bladeworks. \n" +
+                "She's been in development as a fun project since the 9th June 2018. \n" +
+                "Currently she's hosted on my own dekstop PC, alongside the RavenDB for data storage. \n" +
+                "*Have fun with this bot!*";
+            EmbedBuilder embed = new EmbedBuilder()
+                .WithAuthor("Rin Bot")
+                .WithDescription(info)
+                .WithFooter("Made by Toreole");
+            await ReplyAsync("", false, embed.Build(), null);
         }
     }
 }

@@ -37,7 +37,7 @@ namespace RinBot
 
         public async Task GoRin(){
             Rin = this;
-
+            
             client = new DiscordSocketClient();
             commands = new CommandService();
             services = new ServiceCollection()
@@ -53,16 +53,22 @@ namespace RinBot
             await client.LoginAsync(TokenType.Bot, "");
 
             await client.StartAsync();
-            
+
             await Task.Delay(-1);
         }
 
         private async Task RegisterCommandsAsync(){
             random = new Random();
             client.MessageReceived += HandleCommandAsync;
+            client.JoinedGuild += OnJoinGuildAsync;
             await client.SetGameAsync("rin!help");
 
             await commands.AddModulesAsync(Assembly.GetEntryAssembly(), services);
+        }
+
+        public async Task OnJoinGuildAsync(SocketGuild guild){
+            await guild.DefaultChannel.TriggerTypingAsync();
+            await guild.DefaultChannel.SendMessageAsync("Hi there, I'm Rin Bot! \n I'm still in development, so dont count on me all the time.");
         }
 
         public async Task HandleCommandAsync(SocketMessage msg){
