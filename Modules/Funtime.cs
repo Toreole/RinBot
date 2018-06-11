@@ -18,7 +18,6 @@ namespace RinBot
             "Could have been a lot worse {0}, a whole lot worse. "
             };
 
-
         [Command("owo"), Summary("owo at rin")]
         public async Task OwoAsync(){
             await ReplyAsync($"Ey, stop looking at me like that. {Heh}");

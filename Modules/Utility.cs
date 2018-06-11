@@ -34,7 +34,8 @@ namespace RinBot
         }
 
         [Command("help")]
-        public async Task HelpAsync([Remainder]string command){
+        public async Task HelpAsync([Remainder]string command)
+        {
             await Context.Channel.TriggerTypingAsync();
             var commandlist = RinCommandService.Commands;
             var target = commandlist.Where(c => c.Name == command);
@@ -49,7 +50,7 @@ namespace RinBot
                 output = (!string.IsNullOrEmpty(com.Summary))? $"**{command}** : {com.Summary}" : $"Command `{command}` has no summary, try it out!";
             }
             await ReplyAsync(output);
-#region old_code
+#region old_help_linq
             //var assembly = Assembly.GetEntryAssembly();
 
             //Get method with CommandAttribute named string command, that also has a SummaryAttribute. The Summary is the target of this method.
@@ -78,6 +79,19 @@ namespace RinBot
             //string output = $"{command} : {summary}";
             //await ReplyAsync(output);
 #endregion
+        }
+
+        [Command("purge"), RequireBotPermission(GuildPermission.ManageMessages), Summary("Deletes a given amount of messages, only for Moderators."), RequireUserPermission(GuildPermission.ManageMessages)]
+        public async Task PurgeAsync([Remainder] int amount)
+        {
+            //Console.WriteLine($"Purge {amount}");
+            var messages = await Context.Channel.GetMessagesAsync(amount).FlattenAsync();
+            var flatMessages = messages.Cast<IUserMessage>();
+            
+            var channel = Context.Channel as ITextChannel;
+            await channel.DeleteMessagesAsync(flatMessages);
+            //foreach(IMessage msg in messages)
+               // await Context.Channel.DeleteMessageAsync(msg);
         }
     }
 }
