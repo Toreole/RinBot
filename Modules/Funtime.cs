@@ -91,9 +91,8 @@ namespace RinBot
             int error = resStream.Read(buffer, 0, 256);
             string joke = Encoding.UTF8.GetString(buffer.Where(b => b != 0).ToArray());
             
-
             EmbedBuilder embed = new EmbedBuilder()
-                .WithDescription(joke)
+                .WithDescription($"{joke} {Heh}")
                 .WithAuthor($"Dadjoke for {Context.Message.Author.Username}")
                 .WithFooter("Dadjokes powered by icanhazdadjoke.com");
 
