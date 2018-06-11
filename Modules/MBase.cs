@@ -7,7 +7,5 @@ namespace RinBot{
     {
      public Program Rin { get => Program.Rin; }
      public CommandService RinCommandService {get => Rin.commands; }
-
     }
-
 }

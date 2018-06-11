@@ -12,14 +12,15 @@ using static RinBot.Emotes;
 
 namespace RinBot
 {
-    class Program
+    public class Program
     {
+        public static Program Rin { get; private set; }
 
-        CommandService commands;
-        DiscordSocketClient client;
-        IServiceProvider services;
+        public CommandService commands;
+        public DiscordSocketClient client;
+        public IServiceProvider services;
 
-        Random random;
+        public Random random;
 
         string[] pingTexts = { 
             $"Why do you ping me?! {Despair}",
@@ -35,6 +36,8 @@ namespace RinBot
         static void Main(string[] args) => new Program().GoRin().GetAwaiter().GetResult();
 
         public async Task GoRin(){
+            Rin = this;
+
             client = new DiscordSocketClient();
             commands = new CommandService();
             services = new ServiceCollection()
@@ -53,7 +56,6 @@ namespace RinBot
             
             await Task.Delay(-1);
         }
-
 
         private async Task RegisterCommandsAsync(){
             random = new Random();
