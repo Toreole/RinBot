@@ -57,9 +57,9 @@ namespace RinBot
             //foreach(var g in client.Guilds){
                // guildSettings.Add(dbManager.session.Query<GuildSettings>().Where(s => s.guildID == g.Id).First() as GuildSettings);
             //}
-
             await client.LoginAsync(TokenType.Bot, dbManager.Load<Token>("BotToken").token);
 
+            
             await client.StartAsync();
 
             await Task.Delay(-1);

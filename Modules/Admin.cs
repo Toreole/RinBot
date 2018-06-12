@@ -22,21 +22,8 @@ namespace RinBot
             {
                 targetString = targetSetting.ToString();
                 var guildSettings = DBManager.GetGuildSettings(Context.Guild.Id);
-                //var new_Settings = new GuildSettings(Context);
-                //bool settingValue = true;
                 if(guildSettings == null)
                 {
-                    //switch(targetSetting)
-                    //{
-                        // case Setting.RinPing:
-                        //    new_Settings.RinPing = !old_Settings.RinPing;
-                        //    settingValue = new_Settings.RinPing;
-                        //   break;
-                        //case Setting.AllowAtSomeone:
-                        //   new_Settings.AllowAtSomeone = !old_Settings.AllowAtSomeone;
-                        //    settingValue = new_Settings.AllowAtSomeone;
-                        //    break;
-                   // }
                     //Change the targeted Value.
                     guildSettings = new GuildSettings(Context);
 
@@ -62,6 +49,7 @@ namespace RinBot
                     }
                     //await ReplyAsync($"Setting {targetSetting.ToString()}` has been set to `{!settingValue}`.");
                     DBManager.SaveGuildSettings(guildSettings);
+                    await ReplyAsync($"Setting `{setting}` has been initialized as `false`. (Did not exist in this Context yet.)");
                 }
             } 
             else
@@ -86,12 +74,17 @@ namespace RinBot
             {
                 settingList += $"`{entry.Key}` : `{entry.Value.ToString()}` \n";
             }
-            //string settingList = $"**Settings for {Context.Guild.Name}** \n" +
-            //    $"`AllowAtSomeone` : `{guildSettings.AllowAtSomeone}` \n" + 
-            //    $"`RinPing` : `{guildSettings.RinPing}`"; 
-
             await ReplyAsync(settingList);
         }
-        
+
+        [Command("serverlist"), RequireOwner]
+        public async Task ServerListAsnc()
+        {
+            foreach(var guild in Rin.client.Guilds)
+            {
+                Console.WriteLine($"{guild.Name}, {guild.Owner.Username}");
+            }
+            await Task.Delay(1);
+        }
     }
 }

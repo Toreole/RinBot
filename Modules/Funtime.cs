@@ -98,5 +98,28 @@ namespace RinBot
 
             await ReplyAsync ("", false, embed.Build(), null);
         }
+
+        [Command("insult"), Summary("Insults someone badly. Use at own risk."), RequireOwner]
+        public async Task InsultAsync([Remainder]IUser target)
+        {
+            await Context.Channel.TriggerTypingAsync();
+            string url = "https://insult.mattbas.org/api/en/insult.txt";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            //request.Headers.Add("who", $"{target.Mention}");
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream resStream = response.GetResponseStream();
+            byte[] buffer = new byte[256];
+            int error = resStream.Read(buffer, 0, 256);
+            string insult = Encoding.UTF8.GetString(buffer.Where(b => b != 0).ToArray());
+            
+            EmbedBuilder embed = new EmbedBuilder()
+                .WithDescription($"{insult}. {OOF}")
+                .WithAuthor($"Insult for {target.Username}")
+                .WithFooter("Insults powered by insults.mattbas.org");
+
+            await ReplyAsync ("", false, embed.Build(), null);
+        }
     }
 }
