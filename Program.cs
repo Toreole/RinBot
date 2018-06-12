@@ -20,6 +20,7 @@ namespace RinBot
         public DiscordSocketClient client;
         public IServiceProvider services;
 
+        public DatabaseManager dbManager;
         public Random random;
 
         string[] pingTexts = { 
@@ -45,12 +46,11 @@ namespace RinBot
                 .AddSingleton(commands)
                 .BuildServiceProvider();
 
-            Console.WriteLine("Please enter login token:");
-            //string token = Console.ReadLine();
-
             await RegisterCommandsAsync();
 
-            await client.LoginAsync(TokenType.Bot, "");
+            dbManager = new DatabaseManager();
+
+            await client.LoginAsync(TokenType.Bot, dbManager.Load<Token>("BotToken").token);
 
             await client.StartAsync();
 
