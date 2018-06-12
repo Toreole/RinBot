@@ -15,13 +15,15 @@ namespace RinBot
     public class Program
     {
         public static Program Rin { get; private set; }
-
         public CommandService commands;
         public DiscordSocketClient client;
         public IServiceProvider services;
 
         public DatabaseManager dbManager;
         public Random random;
+
+        //For quick access during runtime?
+        public List<GuildSettings> guildSettings;
 
         string[] pingTexts = { 
             $"Why do you ping me?! {Despair}",
@@ -50,6 +52,12 @@ namespace RinBot
 
             dbManager = new DatabaseManager();
 
+            guildSettings = dbManager.GetAllGuildSettings(); 
+            //new List<GuildSettings>();//await dbManager.GetAllGuildSettings(); //as List<GuildSettings>;
+            //foreach(var g in client.Guilds){
+               // guildSettings.Add(dbManager.session.Query<GuildSettings>().Where(s => s.guildID == g.Id).First() as GuildSettings);
+            //}
+
             await client.LoginAsync(TokenType.Bot, dbManager.Load<Token>("BotToken").token);
 
             await client.StartAsync();
@@ -69,6 +77,9 @@ namespace RinBot
         public async Task OnJoinGuildAsync(SocketGuild guild){
             await guild.DefaultChannel.TriggerTypingAsync();
             await guild.DefaultChannel.SendMessageAsync("Hi there, I'm Rin Bot! \n I'm still in development, so dont count on me all the time.");
+            var settings = new GuildSettings(guild);
+            guildSettings.Add(settings);
+            dbManager.SaveGuildSettings(settings);
         }
 
         public async Task HandleCommandAsync(SocketMessage msg){
@@ -79,6 +90,14 @@ namespace RinBot
 
             int argPos = 0;
             var context = new SocketCommandContext(client, message);
+            
+            GuildSettings activeGuildSettings =  guildSettings.Find(s => s.guildID == context.Guild.Id);
+            if(activeGuildSettings == null)
+            {
+                activeGuildSettings = new GuildSettings(context);
+                dbManager.SaveGuildSettings(activeGuildSettings);
+                guildSettings.Add(activeGuildSettings);
+            }
 
             if (message.HasStringPrefix("rin!", ref argPos))
             {
@@ -92,7 +111,7 @@ namespace RinBot
                 }
                 return;
             }
-            if (message.Content.Contains("<@454391745044676608>"))
+            if ( activeGuildSettings.settings[Setting.RinPing.ToString()] && message.Content.Contains("<@454391745044676608>")) //activeGuildSettings.settings[Setting.RinPing] 
             {
                 Random r = new Random();
                 var i = r.Next(0,pingTexts.Length);
@@ -100,7 +119,7 @@ namespace RinBot
 
                 return;
             }
-            if (message.Content.Contains("@someone"))
+            if ( activeGuildSettings.settings[Setting.AllowAtSomeone.ToString()] && message.Content.Contains("@someone")) //activeGuildSettings.settings[Setting.AllowAtSomeone]
             {
                 var possible = context.Guild.Users.Where(x => x.Id != client.CurrentUser.Id && x != message.Author);
                 var target = possible.ElementAt(random.Next(0, possible.Count()));
