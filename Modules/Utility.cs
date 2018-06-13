@@ -22,6 +22,8 @@ namespace RinBot
             "`yay` `owo` `oof` `dadjoke`\n" +
             "**Moderator Commands:**\n" +
             "`purge` \n" +
+            "**Admin Commands:**\n" +
+            "`settinglist` `toggle`\n" +
             "**Other Stuff:** \n" + 
             "Try using @someone and see what happens. ;) \n";
 

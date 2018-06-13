@@ -4,6 +4,7 @@ using Discord.WebSocket;
 using Discord.Commands;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using static RinBot.Emotes;
 
 namespace RinBot
 {
@@ -12,7 +13,7 @@ namespace RinBot
     {
         //Toggle for allowance of @someone (important)
         //Settings per Guild stored in DB, unloaded if unused.
-        [Command("toggle"), Summary("Toggles a setting. \n Available Settings: `AllowAtSomeone` `RinPing`, more coming soon."), RequireUserPermission(GuildPermission.Administrator)]
+        [Command("toggle"), Alias("t"), Summary("Toggles a setting (not case sensitive).\n**Available Settings:** `AllowAtSomeone` `RinPing`, more coming soon.\n**Usage:** `rin!toggle [setting]`"), RequireUserPermission(GuildPermission.Administrator)]
         public async Task ToggleSettingAsync([Remainder]string setting)
         {
             var session = DBManager.session;
@@ -46,10 +47,10 @@ namespace RinBot
                     else //if the value for the setting doesnt exist, add it!
                     {
                         guildSettings.settings.Add(targetString, false);   
+                        await ReplyAsync($"Setting `{setting}` has been initialized as `false`. (Did not exist in this Context yet.)");
                     }
                     //await ReplyAsync($"Setting {targetSetting.ToString()}` has been set to `{!settingValue}`.");
                     DBManager.SaveGuildSettings(guildSettings);
-                    await ReplyAsync($"Setting `{setting}` has been initialized as `false`. (Did not exist in this Context yet.)");
                 }
             } 
             else
@@ -58,7 +59,7 @@ namespace RinBot
             }
         }
 
-        [Command("settinglist"), Summary("Show your current settings for the server"), RequireUserPermission(GuildPermission.Administrator)]
+        [Command("settinglist"), Alias("sl"), Summary("Show your current settings for the server."), RequireUserPermission(GuildPermission.Administrator)]
         public async Task ShowSettingsAsync(){
             var session = DBManager.session;
             var guildSettings = DBManager.GetGuildSettings(Context.Guild.Id);
@@ -80,11 +81,14 @@ namespace RinBot
         [Command("serverlist"), RequireOwner]
         public async Task ServerListAsnc()
         {
+            string servers = $"Here, im on these Servers ! {Wink2}\n";
             foreach(var guild in Rin.client.Guilds)
             {
-                Console.WriteLine($"{guild.Name}, {guild.Owner.Username}");
+                //Console.WriteLine();
+                servers += $"{guild.Name}, {guild.Owner.Username}\n";
             }
-            await Task.Delay(1);
+            await Context.Message.Author.SendMessageAsync(servers);
+            await Context.Message.DeleteAsync();
         }
     }
 }
