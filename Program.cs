@@ -59,7 +59,6 @@ namespace RinBot
             //}
             await client.LoginAsync(TokenType.Bot, dbManager.Load<Token>("BotToken").token);
 
-            
             await client.StartAsync();
 
             await Task.Delay(-1);
@@ -69,6 +68,8 @@ namespace RinBot
             random = new Random();
             client.MessageReceived += HandleCommandAsync;
             client.JoinedGuild += OnJoinGuildAsync;
+            client.UserJoined += OnUserJoinAsync;
+            client.UserLeft += OnUserLeaveAsync;
             await client.SetGameAsync("rin!help");
 
             await commands.AddModulesAsync(Assembly.GetEntryAssembly(), services);
@@ -82,6 +83,38 @@ namespace RinBot
             dbManager.SaveGuildSettings(settings);
         }
 
+        public async Task OnUserJoinAsync(SocketGuildUser user)
+        {
+            var guild = user.Guild;
+            var setting = guildSettings.Find(g => g.guildID == guild.Id);
+
+            if(setting.logChannelID != 0)
+            {
+                var channel = guild.GetChannel(setting.logChannelID) as IMessageChannel;
+                EmbedBuilder embed = new EmbedBuilder()
+                    .WithTitle("New User Joined Guild")
+                    .WithDescription($"User: {user.Username}#{user.Discriminator}\nMention: {user.Mention}")
+                    .WithColor(Color.Blue)
+                    .WithFooter($"Joined: {user.JoinedAt}");
+                await channel.SendMessageAsync("", false, embed.Build(), null);
+            }
+        }
+
+        public async Task OnUserLeaveAsync(SocketGuildUser user)
+        {
+            var guild = user.Guild;
+            var setting = guildSettings.Find(g => g.guildID == guild.Id);
+
+            if(setting.logChannelID != 0)
+            {
+                var channel = guild.GetChannel(setting.logChannelID) as IMessageChannel;
+                EmbedBuilder embed = new EmbedBuilder()
+                    .WithTitle("User Left Guild")
+                    .WithDescription($"User: {user.Username}#{user.Discriminator}\nMention: {user.Mention}")
+                    .WithColor(Color.Red);
+                await channel.SendMessageAsync("", false, embed.Build(), null);
+            }
+        }
         public async Task HandleCommandAsync(SocketMessage msg){
             var message = msg as SocketUserMessage;
 

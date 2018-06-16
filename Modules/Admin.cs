@@ -75,6 +75,8 @@ namespace RinBot
             {
                 settingList += $"`{entry.Key}` : `{entry.Value.ToString()}` \n";
             }
+            if(guildSettings.logChannelID != 0)
+            settingList += $"Log Channel: #{Context.Guild.GetChannel(guildSettings.logChannelID).Name}";
             await ReplyAsync(settingList);
         }
 
@@ -89,6 +91,28 @@ namespace RinBot
             }
             await Context.Message.Author.SendMessageAsync(servers);
             await Context.Message.DeleteAsync();
+        }
+
+        [Command("setlog"), RequireUserPermission(GuildPermission.Administrator), Summary("Set Server Log channel (User Join/Leave)\n**Usage:** rin!setlog #channel")]
+        public async Task SetLogAsync([Remainder]IChannel channel)
+        {
+            var settings = DBManager.GetGuildSettings(Context.Guild.Id);
+            if(settings == null)
+                settings = new GuildSettings(Context.Guild);
+            settings.logChannelID = channel.Id;
+            DBManager.SaveGuildSettings(settings);
+            await ReplyAsync($"Log Channel set to: #{channel.Name}");
+        }
+
+        [Command("nolog"), RequireUserPermission(GuildPermission.Administrator), Summary("Disable Server Log. `rin!help setlog` for more information.")]
+        public async Task NoLogAsync()
+        {
+            var settings = DBManager.GetGuildSettings(Context.Guild.Id);
+            if(settings == null)
+                settings = new GuildSettings(Context.Guild);
+            settings.logChannelID = 0;
+            DBManager.SaveGuildSettings(settings);
+            await ReplyAsync("Log Channel disabled.");
         }
     }
 }

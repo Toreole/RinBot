@@ -12,6 +12,7 @@ namespace RinBot
         public ulong guildOwner;
         public ulong guildID;
         public Dictionary<string, bool> settings;
+        public ulong logChannelID = 0;
         //public bool AllowAtSomeone = true;
         //public bool RinPing = true;
         public GuildSettings(SocketCommandContext context)

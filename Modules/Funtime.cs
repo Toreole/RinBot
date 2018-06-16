@@ -63,9 +63,9 @@ namespace RinBot
         [Command("oof"), Summary("A major OOF. `rin!oof`")]
         public async Task OofAsync(){
             await ReplyAsync($"{OOF}{OOF}{OOF}   {OOF}{OOF}{OOF}   {OOF}{OOF}{OOF}\n" +
-                             $"{OOF}       {OOF}   {OOF}       {OOF}   {OOF}\n"+
-                             $"{OOF}       {OOF}   {OOF}       {OOF}   {OOF}{OOF}\n"+
-                             $"{OOF}       {OOF}   {OOF}       {OOF}   {OOF}\n"+
+                             $"{OOF}{Empty}{OOF}   {OOF}{Empty}{OOF}   {OOF}\n"+
+                             $"{OOF}{Empty}{OOF}   {OOF}{Empty}{OOF}   {OOF}{OOF}\n"+
+                             $"{OOF}{Empty}{OOF}   {OOF}{Empty}{OOF}   {OOF}\n"+
                              $"{OOF}{OOF}{OOF}   {OOF}{OOF}{OOF}   {OOF}\n");
         }
         

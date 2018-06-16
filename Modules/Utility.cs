@@ -23,7 +23,7 @@ namespace RinBot
             "**Moderator Commands:**\n" +
             "`purge` \n" +
             "**Admin Commands:**\n" +
-            "`settinglist` `toggle`\n" +
+            "`settinglist` `toggle` `setlog` `nolog`\n" +
             "**Other Stuff:** \n" + 
             "Try using @someone and see what happens. ;) \n";
 
