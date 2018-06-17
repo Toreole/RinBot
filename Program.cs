@@ -144,7 +144,7 @@ namespace RinBot
                 }
                 return;
             }
-            if ( activeGuildSettings.settings[Setting.RinPing.ToString()] && message.Content.Contains("<@454391745044676608>")) //activeGuildSettings.settings[Setting.RinPing] 
+            if ( activeGuildSettings.settings[Setting.RinPing] && message.Content.Contains("<@454391745044676608>")) //activeGuildSettings.settings[Setting.RinPing] 
             {
                 Random r = new Random();
                 var i = r.Next(0,pingTexts.Length);
@@ -152,7 +152,7 @@ namespace RinBot
 
                 return;
             }
-            if ( activeGuildSettings.settings[Setting.AllowAtSomeone.ToString()] && message.Content.Contains("@someone")) //activeGuildSettings.settings[Setting.AllowAtSomeone]
+            if ( activeGuildSettings.settings[Setting.AllowAtSomeone] && message.Content.Contains("@someone")) //activeGuildSettings.settings[Setting.AllowAtSomeone]
             {
                 var possible = context.Guild.Users.Where(x => x.Id != client.CurrentUser.Id && x != message.Author);
                 var target = possible.ElementAt(random.Next(0, possible.Count()));

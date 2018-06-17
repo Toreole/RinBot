@@ -28,8 +28,8 @@ namespace RinBot
                     //Change the targeted Value.
                     guildSettings = new GuildSettings(Context);
 
-                    var settingValue = guildSettings.settings[targetString];
-                    guildSettings.settings[targetString] = !settingValue;
+                    var settingValue = guildSettings.settings[targetSetting];
+                    guildSettings.settings[targetSetting] = !settingValue;
                     await ReplyAsync($"Setting {targetString}` has been set to `{!settingValue}`.");
                     DBManager.SaveGuildSettings(guildSettings);
                     Rin.guildSettings.Add(guildSettings);
@@ -39,14 +39,14 @@ namespace RinBot
                     bool settingValue;
                     //Get current value, then change it and insert back into DB
                     //if the value exists, do this:
-                    if(guildSettings.settings.TryGetValue(targetString, out settingValue))
+                    if(guildSettings.settings.TryGetValue(targetSetting, out settingValue))
                     {
-                        guildSettings.settings[targetString] = !settingValue;
+                        guildSettings.settings[targetSetting] = !settingValue;
                         await ReplyAsync($"Setting `{targetString}` has been set to `{!settingValue}`.");
                     }
                     else //if the value for the setting doesnt exist, add it!
                     {
-                        guildSettings.settings.Add(targetString, false);   
+                        guildSettings.settings.Add(targetSetting, false);   
                         await ReplyAsync($"Setting `{setting}` has been initialized as `false`. (Did not exist in this Context yet.)");
                     }
                     //await ReplyAsync($"Setting {targetSetting.ToString()}` has been set to `{!settingValue}`.");
@@ -71,9 +71,9 @@ namespace RinBot
             }
 
             string settingList = $"**Settings for {Context.Guild.Name}** \n";
-            foreach (KeyValuePair<string, bool> entry in guildSettings.settings)
+            foreach (KeyValuePair<Setting, bool> entry in guildSettings.settings)
             {
-                settingList += $"`{entry.Key}` : `{entry.Value.ToString()}` \n";
+                settingList += $"`{entry.Key.ToString()}` : `{entry.Value.ToString()}` \n";
             }
             if(guildSettings.logChannelID != 0)
             settingList += $"Log Channel: #{Context.Guild.GetChannel(guildSettings.logChannelID).Name}";
