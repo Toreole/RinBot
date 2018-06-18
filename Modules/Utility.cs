@@ -19,7 +19,7 @@ namespace RinBot
             "**Useful Commands:**\n" +
             "`help` `info`\n" +
             "**Fun Commands:**\n"+
-            "`yay` `owo` `oof` `dadjoke`\n" +
+            "`yay` `owo` `oof` `dadjoke` `tl;dr`\n" +
             "**Moderator Commands:**\n" +
             "`purge` \n" +
             "**Admin Commands:**\n" +
@@ -42,7 +42,7 @@ namespace RinBot
         {
             await Context.Channel.TriggerTypingAsync();
             var commandlist = RinCommandService.Commands;
-            var target = commandlist.Where(c => c.Name == command);
+            var target = commandlist.Where(c => c.Name == command || c.Aliases.Contains(command));
             string output;
             if(target.Count() == 0)
             {

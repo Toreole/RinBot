@@ -121,5 +121,20 @@ namespace RinBot
 
             await ReplyAsync ("", false, embed.Build(), null);
         }
+
+        [Command("tl;dr"), Alias("tldr"), Summary("Sums up the last X messages... maybe accurately")]
+        public async Task TlDrAsync([Remainder]int amount)
+        {
+            await Context.Channel.TriggerTypingAsync();
+            if (amount > 250) amount = 250;
+            if (amount < 20) amount = 20;
+            var messages = await Context.Channel.GetMessagesAsync(amount).FlattenAsync();
+            var flatMessages = messages.Where(m => m.GetType() != typeof(Discord.Rest.RestSystemMessage)).Cast<IUserMessage>().ToArray();
+            for(int i = 0; i < 5; i++)
+            {
+                var msg = flatMessages[Rin.random.Next(0, flatMessages.Length)] as IUserMessage;
+                await ReplyAsync($"{msg.Author.Username}: {msg.Content}");
+            }
+        }
     }
 }
