@@ -27,7 +27,7 @@ namespace RinBot
 
         string[] pingTexts = { 
             $"Why do you ping me?! {Despair}",
-            $"PLS NO PING {Reeee}",
+            $"DO NOT PING! {Reeee}",
             "...", 
             "Cut it out!", 
             $"{Baka}",

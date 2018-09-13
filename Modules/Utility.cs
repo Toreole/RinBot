@@ -19,7 +19,7 @@ namespace RinBot
             "**Useful Commands:**\n" +
             "`help` `info`\n" +
             "**Fun Commands:**\n"+
-            "`yay` `owo` `oof` `dadjoke` `tl;dr`\n" +
+            "`yay` `owo` `oof` `dadjoke` `tl;dr` `prequelmeme` `surreal`\n" +
             "**Moderator Commands:**\n" +
             "`purge` \n" +
             "**Admin Commands:**\n" +

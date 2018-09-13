@@ -8,6 +8,7 @@ using System.Net;
 using System.IO;
 using System.Text;
 using static RinBot.Emotes;
+using Newtonsoft.Json;
 
 namespace RinBot
 {
@@ -135,6 +136,38 @@ namespace RinBot
                 var msg = flatMessages[Rin.random.Next(0, flatMessages.Length)] as IUserMessage;
                 await ReplyAsync($"{msg.Author.Username}: {msg.Content}");
             }
+        }
+
+        [Command("PrequelMeme"), Alias("PMeme"), Summary("Its a prequel meme stolen from reddit lol.")]
+        public async Task PrequelMemeAsync()
+        {
+            string json = new WebClient().DownloadString("https://reddit.com/r/prequelmemes/top/.json?limit=10");
+
+            dynamic row = JsonConvert.DeserializeObject (json);
+
+            Random rand = new Random();
+            row = row.data.children[rand.Next(0, 10)].data.preview.images[0].source;
+            //row.data.children.data.preview.images.source.url
+            var b = new EmbedBuilder();
+            b.WithImageUrl(row.url.ToString());
+
+            await ReplyAsync(null, false, b.Build(), null);
+        }
+
+        [Command("Surreal"), Alias("surr"), Summary("Its a surreal meme stolen from reddit lol.")]
+        public async Task SurrealMemeAsync()
+        {
+            string json = new WebClient().DownloadString("https://reddit.com/r/surrealmemes/top/.json?limit=10");
+
+            dynamic row = JsonConvert.DeserializeObject (json);
+
+            Random rand = new Random();
+            row = row.data.children[rand.Next(0, 10)].data.preview.images[0].source;
+            //row.data.children.data.preview.images.source.url
+            var b = new EmbedBuilder();
+            b.WithImageUrl(row.url.ToString());
+
+            await ReplyAsync(null, false, b.Build(), null);
         }
     }
 }
