@@ -52,6 +52,12 @@ namespace RinBot
             {
                 var com = target.First() as CommandInfo;
                 output = (!string.IsNullOrEmpty(com.Summary))? $"**{command}** : {com.Summary}" : $"Command `{command}` has no summary, try it out!";
+                if(com.Aliases.Count() > 0)
+                {
+                    output += ", Aliases: ";
+                    for(int i = 0; i < com.Aliases.Count(); i++)
+                        output += $"`{com.Aliases[i]}` ";
+                }
             }
             await ReplyAsync(output);
 #region old_help_linq

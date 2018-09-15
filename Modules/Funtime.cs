@@ -169,5 +169,53 @@ namespace RinBot
 
             await ReplyAsync(null, false, b.Build(), null);
         }
+
+        [Command("reddit"), Alias("redd"), Summary("Fetch some top 10 post of a subreddit. (Random, Checks for NSFW content)")]
+        public async Task RedditPostAsnyc([Remainder]string subreddit)
+        {
+            //Get the top 10 posts of the subreddit.
+            string json = new WebClient().DownloadString($"https://reddit.com/r/{subreddit}/top/.json?limit=10");
+            //random index
+            Random rand = new Random();
+            int index = rand.Next(0,10);
+            //make the json usable
+            dynamic row = JsonConvert.DeserializeObject (json);
+            //check if the subreddit exists / has posts.
+            var children = row.data.children as Newtonsoft.Json.Linq.JArray;
+            if(row == null || children.Count == 0)
+            {
+                await ReplyAsync($"Couldn't find subreddit {subreddit}.");
+                return;
+            }
+            //set the target post
+            row = row.data.children[index];
+            //get the image url and create the title for the embed.
+            string url = row.data.preview.images[0].source.url.ToString();
+            string title = $"Top {index+1} of r/{subreddit}.";
+            //is the post NSFW ?
+            if(bool.Parse(row.data.over_18.ToString()))
+            {
+                //does the channel allow NSFW content?
+                var channel = Context.Channel as ITextChannel;
+                if(channel.IsNsfw)
+                {
+                    await ReplyAsync("", false, BuildEmbed());
+                }
+                else 
+                {
+                    await ReplyAsync("Baka, the target post was nsfw, thats not allowed here!");
+                }
+            }
+            else
+            {
+                await ReplyAsync("", false, BuildEmbed());
+            }
+            //local Embed to make the code easier to read.
+            Embed BuildEmbed()
+            {
+                EmbedBuilder b = new EmbedBuilder().WithImageUrl(url).WithTitle(title);
+                return b.Build();
+            }
+        }
     }
 }
