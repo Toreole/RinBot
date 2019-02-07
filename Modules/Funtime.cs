@@ -203,7 +203,7 @@ namespace RinBot
                 }
                 else 
                 {
-                    await ReplyAsync("Baka, the target post was nsfw, thats not allowed here!");
+                    await ReplyAsync("Oopsie woopsie, i almost posted something NSFW in here.");
                 }
             }
             else

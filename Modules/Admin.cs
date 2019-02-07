@@ -59,8 +59,9 @@ namespace RinBot
             }
         }
 
-        [Command("settinglist"), Alias("sl"), Summary("Show your current settings for the server."), RequireUserPermission(GuildPermission.Administrator)]
-        public async Task ShowSettingsAsync(){
+        [Command("settings"), Summary("Show your current settings for the server."), RequireUserPermission(GuildPermission.Administrator)]
+        public async Task ShowSettingsAsync()
+        {
             var session = DBManager.session;
             var guildSettings = DBManager.GetGuildSettings(Context.Guild.Id);
             if(guildSettings == null)
@@ -87,7 +88,7 @@ namespace RinBot
             foreach(var guild in Rin.client.Guilds)
             {
                 //Console.WriteLine();
-                servers += $"{guild.Name}, {guild.Owner.Username}\n";
+                servers += $"{guild.Name}, by: {guild.Owner.Username}\n";
             }
             await Context.Message.Author.SendMessageAsync(servers);
             await Context.Message.DeleteAsync();
